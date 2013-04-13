@@ -17,13 +17,18 @@ widestCap = 0
 
 for s in span:
 	link = s.find('a').string
-	price = s.parent.parent.find('strong').string.strip().strip('$').replace(',','')
-	if len(price) > 0:
-		price = float(price)
-	else:
-		continue
+	node = s
 
-	products[link] = price
+	# Find the first tr parent
+	while node.name != 'tr':
+		node = node.parent
+
+	priceText = node.find('strong').findAll(text=re.compile('\$([0-9]+,)?[0-9]+\.[0-9]+'))[0]
+	priceText = priceText.strip().strip('$').replace(',','')
+
+	if len(priceText) > 0:
+		price = float(priceText)
+		products[link] = price
 
 
 for p in products:
