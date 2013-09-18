@@ -5,5 +5,5 @@ ncixhdmon helps you choose a hard drive to buy from NCIX. It fetches the list of
 
 A weekly updated list can generally be found here [2].
 
-[1] http://www.ncix.com/products/index.php?minorcatid=109
-[2] http://nova.polymtl.ca/~simark/ncixhd.txt
+1. http://www.ncix.com/products/index.php?minorcatid=109
+2. http://nova.polymtl.ca/~simark/ncixhd.txt
