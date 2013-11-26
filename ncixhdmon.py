@@ -59,7 +59,7 @@ template_html = """<!doctype>
 </head>
 <body>
     <h1>ncixhdmon report</h1>
-    <h3>Generated on {{ gen_date }}</h3>
+    <h3>Generated {{ gen_date }}</h3>
     <table>
         <thead>
             <tr>
@@ -83,7 +83,9 @@ template_html = """<!doctype>
 </body>
 </html>"""
 
-template_plaintext = """     Price       Cap      $/GB  Name
+template_plaintext = """     ncixhdmon report - generated {{ gen_date }}
+
+     Price       Cap      $/GB  Name
 ==============================================================================
 {% for result in results %}{{ '%10.2f' | format(result.price) }}{{ '%10s' | format(result.cap_text) }}{{ '%10.3f' | format(result.ratio) }}  {{ result.name }}
 {% endfor %}"""
