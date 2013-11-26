@@ -12,3 +12,4 @@ you need
 
   * Python 3
     * BeautifulSoup 4
+    * Jinja2
