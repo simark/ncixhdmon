@@ -32,8 +32,8 @@ for s in span:
 
 
 for p in products:
-	matchTB = re.search("([0-9.]+)\s?TB", p)
-	matchGB = re.search("([0-9.]+)\s?GB", p)
+	matchTB = re.search("([0-9.]+)\s?tb", p.lower())
+	matchGB = re.search("([0-9.]+)\s?gb", p.lower())
 	if matchTB:
 		cap = float(matchTB.group(1)) * 1000
 	elif matchGB:
