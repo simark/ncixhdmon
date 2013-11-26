@@ -3,8 +3,7 @@ import urllib.request
 import re
 import datetime
 import jinja2
-import json
-
+import sys
 
 # some templates
 template_html = """<!doctype>
@@ -73,7 +72,7 @@ template_html = """<!doctype>
         <tbody>
             {% for result in results %}
                 <tr>
-                    <td>{{ result.price }}</td>
+                    <td>{{ result.price | round(2) }}</td>
                     <td>{{ result.cap_text }}</td>
                     <td>{{ result.ratio | round(3) }}</td>
                     <td><a href="{{ result.href }}">{{ result.name }}</a></td>
@@ -82,8 +81,12 @@ template_html = """<!doctype>
         </tbody>
     </table>
 </body>
-</html>
-"""
+</html>"""
+
+template_plaintext = """     Price       Cap      $/GB  Name
+==============================================================================
+{% for result in results %}{{ '%10.2f' | format(result.price) }}{{ '%10s' | format(result.cap_text) }}{{ '%10.3f' | format(result.ratio) }}  {{ result.name }}
+{% endfor %}"""
 
 
 def format_cap(cap):
@@ -99,7 +102,7 @@ def get_results():
 
     soup = BeautifulSoup(data)
     span = soup.findAll(name='span', attrs={'class': 'listing'})
-    
+
     products = []
     widestPrice = 0
     widestCap = 0
@@ -166,18 +169,11 @@ def output_results(results, warning_msgs, template_str):
 
     return template.render(gen_date=datetime.date.today(), results=results)
 
-def sortkey(element):
-    return element[1][2]
 
-"""
-for i in sorted(products, key=sortkey):
-    if i[1][1] > 0:
-        if i[1][1] >= 1000:
-            cap = '{:.1f} TB'.format(i[1][1] / 1000)
-        else:
-            cap = '{} GB'.format(i[1][1])
-        print("%.2f\t%s\t%.3f\t" % (i[1][0], cap, i[1][2]) + i[0])
-"""
-
-results, warning_msgs = get_results()
-print(output_results(results, warning_msgs, template_html))
+if __name__ == '__main__':
+    template = template_plaintext
+    if len(sys.argv) > 1:
+        if sys.argv[1] == 'html':
+            template = template_html
+    results, warning_msgs = get_results()
+    print(output_results(results, warning_msgs, template))
