@@ -1,10 +1,10 @@
-from BeautifulSoup import BeautifulSoup
-import urllib
+from bs4 import BeautifulSoup
+import urllib.request, urllib.parse, urllib.error
 import re
 from operator import itemgetter
 import datetime
 
-f = urllib.urlopen("http://www.ncix.com/products/?minorcatid=109&po=0&ps=2")
+f = urllib.request.urlopen("http://www.ncix.com/products/?minorcatid=109&po=0&ps=2")
 data = f.read()
 
 soup = BeautifulSoup(data)
@@ -39,7 +39,7 @@ for p in products:
 	elif matchGB:
 		cap = float(matchGB.group(1))
 	else:
-		print "Warning: capacity not found for " + p
+		print("Warning: capacity not found for " + p)
 		cap = -1
 
 	price = products[p]
@@ -47,11 +47,11 @@ for p in products:
 	products[p] = (price, cap, ratio)
 
 now = datetime.datetime.now()
-print "Generated on " + str(now)
-print "Prix\tTaille\t$/GB\tNom"
-print "---------------------------"
+print("Generated on " + str(now))
+print("Prix\tTaille\t$/GB\tNom")
+print("---------------------------")
 
-products = [p for p in products.items() if p[1][2] > 0]
+products = [p for p in list(products.items()) if p[1][2] > 0]
 
 def sortkey(element):
 	return element[1][2]
@@ -62,4 +62,4 @@ for i in sorted(products, key=sortkey):
 			cap = "%.1f TB" % (i[1][1] / 1000)
 		else:
 			cap = "%d GB" % i[1][1]
-		print "%.2f\t%s\t%.3f\t" % (i[1][0], cap, i[1][2]) + i[0]
+		print("%.2f\t%s\t%.3f\t" % (i[1][0], cap, i[1][2]) + i[0])
