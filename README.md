@@ -13,3 +13,14 @@ you need
   * Python 3
     * BeautifulSoup 4
     * Jinja2
+
+use it
+------
+
+Plain text report:
+
+    python ncixhdmon.py
+
+HTML report:
+
+    python ncixhdmon.py html > /tmp/report.htm && your-favorite-browser /tmp/report.htm
