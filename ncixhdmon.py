@@ -44,7 +44,7 @@ template_html = """<!doctype>
         th {
             background: #ddd;
         }
-        h1, h3 {
+        h1, h3, div.warning {
             margin-bottom: 15px;
         }
         a:link, a:visited {
@@ -54,12 +54,29 @@ template_html = """<!doctype>
         a:hover {
             text-decoration: underline;
         }
+        div.warning {
+            background: #F5E498;
+            padding: 15px;
+            border-radius: 2px;
+            border: 1px solid #C2B478;
+        }
+        div.warning p {
+            line-height: 150%;
+            color: #222;
+        }
 
     </style>
 </head>
 <body>
     <h1>ncixhdmon report</h1>
     <h3>Generated {{ gen_date }}</h3>
+    {% if warning_msgs %}
+        <div class="warning">
+            {% for msg in warning_msgs %}
+                <p>{{ msg }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
     <table>
         <thead>
             <tr>
@@ -84,7 +101,9 @@ template_html = """<!doctype>
 </html>"""
 
 template_plaintext = """     ncixhdmon report - generated {{ gen_date }}
-
+{% if warning_msgs %}
+{% for msg in warning_msgs %}** {{ msg }} **
+{% endfor %}{% endif %}
      Price       Cap      $/GB  Name
 ==============================================================================
 {% for result in results %}{{ '%10.2f' | format(result.price) }}{{ '%10s' | format(result.cap_text) }}{{ '%10.3f' | format(result.ratio) }}  {{ result.name }}
@@ -169,7 +188,8 @@ def output_results(results, warning_msgs, template_str):
     env = jinja2.Environment()
     template = env.from_string(source=template_str)
 
-    return template.render(gen_date=datetime.date.today(), results=results)
+    return template.render(gen_date=datetime.date.today(), results=results,
+                           warning_msgs=warning_msgs)
 
 
 if __name__ == '__main__':
