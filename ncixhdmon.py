@@ -157,8 +157,8 @@ def get_results(limit):
         name = p['name']
         price = p['price']
 
-        matchTB = re.search('([0-9.]+)\s?TB', name)
-        matchGB = re.search('([0-9.]+)\s?GB', name)
+        matchTB = re.search('([0-9.]+)\s?tb', name.lower())
+        matchGB = re.search('([0-9.]+)\s?gb', name.lower())
         if matchTB:
             cap = float(matchTB.group(1)) * 1000
         elif matchGB:
