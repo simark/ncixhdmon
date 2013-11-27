@@ -24,3 +24,8 @@ Plain text report:
 HTML report:
 
     python ncixhdmon.py html > /tmp/report.htm && your-favorite-browser /tmp/report.htm
+
+With a size limit of 1000 GB:
+
+    python ncixhdmon.py text 1000
+    python ncixhdmon.py html 1000 > /tmp/report.htm && your-favorite-browser /tmp/report.htm

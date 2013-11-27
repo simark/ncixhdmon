@@ -98,7 +98,7 @@ def format_cap(cap):
         return '{}'.format(cap).rstrip('0').rstrip('.') + ' GB'
 
 
-def get_results():
+def get_results(limit):
     f = urllib.request.urlopen('http://www.ncix.com/products/?minorcatid=109&po=0&ps=2')
     data = f.read()
 
@@ -149,7 +149,7 @@ def get_results():
             cap = -1
 
         ratio = price / cap
-        if ratio > 0:
+        if ratio > 0 and cap <= limit:
             results.append({
                 'price': price,
                 'cap': cap,
@@ -177,5 +177,8 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         if sys.argv[1] == 'html':
             template = template_html
-    results, warning_msgs = get_results()
+    limit = sys.maxsize
+    if len(sys.argv) > 2:
+        limit = float(sys.argv[2])
+    results, warning_msgs = get_results(limit)
     print(output_results(results, warning_msgs, template))
