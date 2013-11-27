@@ -38,6 +38,16 @@ template_html = """<!doctype>
             padding: 10px;
             border: 1px solid #bbb;
         }
+        td {
+            vertical-align: top;
+        }
+        td.iframe {
+            width: 75%;
+        }
+        td.iframe span {
+            display: inline-block;
+            width: 80px;
+        }
         tr:hover td {
             background: #eee;
         }
@@ -64,8 +74,30 @@ template_html = """<!doctype>
             line-height: 150%;
             color: #222;
         }
-
+        iframe {
+            width: 100%;
+            height: 600px;
+            margin-top: 10px;
+        }
     </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="application/javascript">
+        $(document).ready(function() {
+            $('td.iframe a.shrink').hide();
+            $('td.iframe a.expand').click(function(e) {
+                e.preventDefault();
+                $(this).hide();
+                $(this).parent().find('a.shrink').show();
+                $(this).parent().parent().after('<iframe src="' + $(this).attr('href') + '"></iframe>');
+            });
+            $('td.iframe a.shrink').click(function(e) {
+                e.preventDefault();
+                $(this).hide();
+                $(this).parent().find('a.expand').show();
+                $(this).closest('.iframe').find('iframe').remove();
+            });
+        });
+    </script>
 </head>
 <body>
     <h1>ncixhdmon report</h1>
@@ -92,7 +124,7 @@ template_html = """<!doctype>
                     <td>{{ result.price | round(2) }}</td>
                     <td>{{ result.cap_text }}</td>
                     <td>{{ result.ratio | round(3) }}</td>
-                    <td><a href="{{ result.href }}">{{ result.name }}</a></td>
+                    <td class="iframe"><div><span>[<a class="expand" href="{{ result.href }}">expand</a><a class="shrink" href="#">shrink</a>]</span><a href="{{ result.href }}">{{ result.name }}</a></div></td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -192,12 +224,23 @@ def output_results(results, warning_msgs, template_str):
 
 
 if __name__ == '__main__':
-    template = template_plaintext
+    templates = {
+        'text': template_plaintext,
+        'plain': template_plaintext,
+        'html': template_html
+    }
+    template = templates['text']
+
+    # get template
     if len(sys.argv) > 1:
-        if sys.argv[1] == 'html':
-            template = template_html
+        if sys.argv[1] in templates:
+            template = templates[sys.argv[1]]
+
+    # get limit
     limit = sys.maxsize
     if len(sys.argv) > 2:
         limit = float(sys.argv[2])
+
+    # get and output results
     results, warning_msgs = get_results(limit)
     print(output_results(results, warning_msgs, template))
