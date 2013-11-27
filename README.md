@@ -5,7 +5,7 @@ ncixhdmon
 of hard drives from [ncix.com](http://www.ncix.com/), computes the cost per GB and
 outputs a simple sorted list.
 
-A weekly updated list can generally be found [here](http://nova.polymtl.ca/~simark/ncixhd.txt).
+A weekly updated list can generally be found [here in text](http://nova.polymtl.ca/~simark/ncixhd.txt) or [here in html](http://nova.polymtl.ca/~simark/ncixhd.html).
 
 you need
 --------
