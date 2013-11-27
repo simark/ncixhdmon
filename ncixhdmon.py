@@ -124,14 +124,14 @@ def get_results(limit):
     soup = BeautifulSoup(data)
     span = soup.findAll(name='span', attrs={'class': 'listing'})
 
-    products = []
+    products = {}
     widestPrice = 0
     widestCap = 0
 
     # gather items
     for s in span:
         link_node = s.find('a')
-        href = link_node['href']
+        href = 'http://www.ncix.com' + link_node['href']
         name = link_node.string
         node = s
 
@@ -144,16 +144,15 @@ def get_results(limit):
 
         if len(priceText) > 0:
             price = float(priceText)
-            products.append({
-                'href': 'http://www.ncix.com' + href,
+            products[href] = {
                 'name': name,
                 'price': price
-            })
+            }
 
     # format results
     results = []
     warning_msgs = []
-    for p in products:
+    for href, p in products.items():
         name = p['name']
         price = p['price']
 
@@ -174,7 +173,7 @@ def get_results(limit):
                 'cap': cap,
                 'cap_text': format_cap(cap),
                 'ratio': ratio,
-                'href': p['href'],
+                'href': href,
                 'name': name
             })
 
