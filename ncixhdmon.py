@@ -163,7 +163,7 @@ def get_results(limit):
     # gather items
     for s in span:
         link_node = s.find('a')
-        href = 'http://www.ncix.com' + link_node['href']
+        href = link_node['href']
         name = link_node.string
         node = s
 
