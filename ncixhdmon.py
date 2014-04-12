@@ -1,9 +1,9 @@
 from bs4 import BeautifulSoup
-import urllib.request
 import re
 import datetime
 import jinja2
 import sys
+import requests
 
 # some templates
 template_html = """<!doctype>
@@ -150,8 +150,8 @@ def format_cap(cap):
 
 
 def get_results(limit):
-    f = urllib.request.urlopen('http://www.ncix.com/products/?minorcatid=109&po=0&ps=2')
-    data = f.read()
+    f = requests.get('http://www.ncix.com/category/hard-drives-dd-109.htm')
+    data = f.text
 
     soup = BeautifulSoup(data)
     span = soup.findAll(name='span', attrs={'class': 'listing'})
