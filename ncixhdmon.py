@@ -150,7 +150,7 @@ def format_cap(cap):
 
 
 def get_results(limit):
-    f = requests.get('http://www.ncix.com/category/hard-drives-dd-109.htm')
+    f = requests.get('http://www.ncix.com/category/hard-drives-8a-109.htm')
     data = f.text
 
     soup = BeautifulSoup(data)
