@@ -171,7 +171,13 @@ def get_results(limit):
         while node.name != 'tr':
             node = node.parent
 
-        priceText = node.find('strong').findAll(text=re.compile('\$([0-9]+,)?[0-9]+\.[0-9]+'))[0]
+        # Find the td of that tr containing the price
+        td = node.find(name='td', attrs={'align': 'right'})
+
+        # Find the price in the td
+        priceText = td.find('strong').find(text=re.compile(r'\$([0-9]+,)?[0-9]+\.[0-9]+'))
+
+        # Cleanup the price string
         priceText = priceText.strip().strip('$').replace(',', '')
 
         if len(priceText) > 0:
