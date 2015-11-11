@@ -163,6 +163,9 @@ def get_results(limit):
     # gather items
     for s in span:
         link_node = s.find('a')
+        if not link_node:
+            continue
+
         href = link_node['href']
         name = link_node.string
         node = s
