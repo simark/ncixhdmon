@@ -153,7 +153,7 @@ def get_results(limit):
     f = requests.get('http://www.ncix.com/category/hard-drives-8a-109.htm')
     data = f.text
 
-    soup = BeautifulSoup(data)
+    soup = BeautifulSoup(data, "lxml")
     span = soup.findAll(name='span', attrs={'class': 'listing'})
 
     products = {}
