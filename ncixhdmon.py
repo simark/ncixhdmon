@@ -177,8 +177,16 @@ def get_results(limit):
         # Find the td of that tr containing the price
         td = node.find(name='td', attrs={'align': 'right'})
 
+        if not td:
+            continue
+
         # Find the price in the td
-        priceText = td.find('strong').find(text=re.compile(r'\$([0-9]+,)?[0-9]+\.[0-9]+'))
+        strong = td.find('strong')
+
+        if not strong:
+            continue
+
+        priceText = strong.find(text=re.compile(r'\$([0-9]+,)?[0-9]+\.[0-9]+'))
 
         # Cleanup the price string
         priceText = priceText.strip().strip('$').replace(',', '')
